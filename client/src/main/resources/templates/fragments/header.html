@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Header Fragment</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<header th:fragment="header">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-1">
+                <img src="../../img/mediscreen.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+            </div>
+            <div class="col-11">
+                <nav class="navbar-light">
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item"><a class="nav-link text-danger" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger" href="/patient/list">Patient</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger" href="/history/patientList">History</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger" href="/history/patientList">DiseaseCalcul</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+</body>
+</html>

@@ -1,0 +1,199 @@
+version: '3'
+services:
+  database:
+    container_name: mysql-database
+    image: 'mysql:latest'
+    ports:
+      - "3366:3306"
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mediscreen
+      MYSQL_USER: mspatient
+      MYSQL_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - mediscreen-net
+
+  mongo-db:
+    image: mongo
+    restart: on-failure
+    ports:
+      - "27017:27017"
+    container_name: mongo-db
+    networks:
+      - mediscreen-net
+    volumes:
+      - db-data:/var/lib/mongodb
+
+  config-server:
+    image: config-server
+    build: /config-server-repo/config-server/.
+    container_name: config-server
+    #environment:
+      #CONFIGSERVER_URI: "http://config-server:9101"
+      #CONFIGSERVER_PORT: "9101"
+    ports:
+      - "9101:9101"
+    restart: on-failure
+    networks:
+      - mediscreen-net
+    healthcheck:
+          test: ["CMD", "echo","curl", "-f", "http://localhost:9101/client/default", "|| exit 1"]
+          interval: 30s
+          timeout: 3s
+          retries: 30
+
+  eureka-server:
+    image: eureka-server
+    build: /eureka/.
+    container_name: eureka-server
+    environment:
+      #CONFIGSERVER_URI: "http://config-server:9101"
+      #CONFIGSERVER_PORT: "9101"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:9101"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+      #EUREKASERVER_PORT: "8761"
+    ports:
+      - "8761:8761"
+    restart: on-failure
+    depends_on:
+      config-server:
+        condition: service_healthy
+    networks:
+      - mediscreen-net
+    healthcheck:
+          test: ["CMD","echo", "curl", "-f", "http://localhost:8761", "|| exit 1"]
+          interval: 30s
+          timeout: 3s
+          retries: 30
+    
+     
+  mediscreen-patient:
+    image: patient
+    build: /patient/.
+    container_name: mediscreen-patient
+    environment:
+      SERVER_PORT: "8090"
+      #CONFIG-SERVER_URI: "http://config-server:9101"
+      #CONFIG-SERVER_PORT: "9101"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:9101"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+      #EUREKA-SERVER_PORT: "8761"
+      DATABASE_HOST: database
+      DATABASE_USER: mspatient
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: mediscreen
+      DATABASE_PORT: 3306
+    ports:
+      - "8090:8090"
+    restart: on-failure
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      database:
+        condition: service_started
+    networks:
+      - mediscreen-net
+    healthcheck:
+          test: ["CMD","echo", "curl", "-f", "http://localhost:8090/patient", "|| exit 1"]
+          interval: 30s
+          timeout: 3s
+          retries: 30
+   
+
+  
+  mediscreen-history:
+    image: history
+    build: /history/.
+    container_name: mediscreen-history
+    environment:
+      SERVER_PORT: "8092"
+      #CONFIG-SERVER_URI: "http://config-server:9101"
+      #CONFIG-SERVER_PORT: "9101"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:9101"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+      #EUREKA-SERVER_PORT: "8761"
+      DATABASE_HOST: mongo-db
+      DATABASE_NAME: mediscreen
+      DATABASE_PORT: 27017
+    ports:
+      - "8092:8092"
+    restart: on-failure
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mongo-db:
+        condition: service_started
+    networks:
+      - mediscreen-net
+    healthcheck:
+          test: ["CMD","echo", "curl", "-f", "http://localhost:8092/history/1", "|| exit 1"]
+          interval: 30s
+          timeout: 3s
+          retries: 30
+   
+  mediscreen-disease:
+    image: disease
+    build: /disease/.
+    container_name: mediscreen-disease
+    environment:
+      SERVER_PORT: "8093"
+      #CONFIG-SERVER_URI: "http://config-server:9101"
+      #CONFIG-SERVER_PORT: "9101"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:9101"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+      #EUREKA-SERVER_PORT: "8761"
+    restart: on-failure
+    ports:
+     - "8093:8093"
+    depends_on:
+      mediscreen-patient:
+        condition: service_healthy
+      mediscreen-history:
+        condition: service_healthy
+    networks:
+      - mediscreen-net
+    healthcheck:
+          test: ["CMD","echo", "curl", "-f", "http://localhost:8093/disease/assess/1", "|| exit 1"]
+          interval: 30s
+          timeout: 3s
+          retries: 30
+
+  mediscreen-client:
+    image: client
+    build: /client/.
+    container_name: mediscreen-client
+    environment:
+      SERVER_PORT: "8080"
+      #CONFIG-SERVER_URI: "http://config-server:9101"
+      #CONFIG-SERVER_PORT: "9101"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:9101"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+      #EUREKA-SERVER_PORT: "8761"
+    restart: on-failure
+    ports:
+     - "8080:8080"
+    depends_on:
+      mediscreen-disease:
+        condition: service_healthy
+    networks:
+      - mediscreen-net
+
+networks:
+  mediscreen-net:
+    driver: bridge
+
+volumes:
+  db-data:
+
+
+    
+
+
+
+
+  
+ 
+

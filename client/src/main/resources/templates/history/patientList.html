@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home History</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="row m-3" ><h2 class="text-danger text-center">Patient List</h2></div>
+
+    <div class="row m-5">
+        <table class="table table-bordered-rounded bg-light">
+            <thead>
+            <tr>
+                <th>click on the name to access the history </th>
+                <th>Asses disease</th>
+                <th>Report disease</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="patient : ${patients}">
+                <td>
+                    <a class="text-success" th:href="@{/history/notelist/{id}(id=${patient.id})}" th:text="${patient.firstName}+' '+${patient.lastName}">Name Patient</a>&nbsp;
+                </td>
+
+                <td>
+                    <a class="btn btn-success btn-sm" th:href="@{/assess/{id}(id=${patient.id})}" >Click to see Report</a>&nbsp;
+                </td>
+                <td th:if="${patient.id==report.idPatient}">
+                    <p>Age: <span th:text="${report.age}"></span> Trigger: <span th:text="${report.numberTrigger}"></span>
+                     Assess: <span th:text="${report.assess}"></span></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

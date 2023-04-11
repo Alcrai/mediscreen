@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Note Update</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <div class="row m-3"><h2 class="text-danger" th:text="${patient.firstName}+' '+${patient.lastName}">Patient Name</h2>
+    </div>
+    <div class="row">
+        <form action="#" th:action="@{/history/noteupdate/validate/{idNote}(idNote=${note.id})}" th:object="${note}" method="post"
+              class="form-horizontal"
+              style="width: 100%">
+            <div class="invisible">
+                <label for="patientId" class="col-sm-2 control-label">patientId</label>
+                <input type="text" th:field="*{patientId}" id="patientId" name="patientId">
+                <p class="text-danger" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></p>
+            </div>
+            <div class="container">
+                <div class="row w-100 m-1">
+                    <label for="date" class="col-2 control-label">Date</label>
+                    <div class="col-10">
+                        <input type="text" th:field="*{date}" id="date" placeholder="dd/mm/yyyy" class="w-100">
+                        <p class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
+                    </div>
+                </div>
+                <div class="row w-100 m-1">
+                    <Label for="content" class="col-2">Note</Label>
+                    <textarea class="form-control col-10 w-100" id="content" name="content" style="height:300px"
+                              th:field="${note.content}"
+                              placeholder="Add your comment"></textarea>
+                    <p class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+                </div>
+                <div class="row w-100 m-1 justify-content-end">
+                    <div>
+                        <a class="btn btn-danger btn-sm" th:href="@{/history/notelist/{idPatient}(idPatient=${patient.id})}">Cancel</a>
+                        <input class="btn btn-success btn-sm" type="submit" value="Update Note">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

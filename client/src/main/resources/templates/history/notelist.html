@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History Patient</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container mb-3">
+    <div class="row mm-3"><h2 class="text-danger" th:text="${patient.firstName}+' '+${patient.lastName}">Patient
+        Name</h2>
+    </div>
+    <div class="row m-2">
+        <div class="row m-2">
+            <a th:href="@{/history/noteadd/{idPatient}(idPatient=${patient.id})}" class="btn btn-success btn-sm">Add New
+                Note</a>
+        </div>
+        <div class="container p-1 text-center" th:each="note : ${notes}">
+            <div class="row m-3 border border-success p-2 mb-2 border-opacity-25 rounded">
+                <div class="col-3 m-1">
+                    <Label for="content">Note of <span th:text="${note.date}">Date</span></Label>
+                </div>
+                <div class="col-8 m-1">
+                    <textarea class="form-control" id="content" name="content" th:text="${note.content}"
+                              style="height:200px"></textarea>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-3">
+                    <p>
+                        <a class="text-success" th:href="@{/history/noteupdate/{idNote}(idNote=${note.id})}">Edit</a>&nbsp;|&nbsp;
+                        <a class="text-danger" th:href="@{/history/notedelete/{idNote}(idNote=${note.id})}">Delete</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
