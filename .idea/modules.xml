@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/config-server-repo/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server-repo/config-server/config-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/disease/disease.iml" filepath="$PROJECT_DIR$/disease/disease.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka/eureka.iml" filepath="$PROJECT_DIR$/eureka/eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/history/history.iml" filepath="$PROJECT_DIR$/history/history.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mediscreen.iml" filepath="$PROJECT_DIR$/.idea/mediscreen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patient/patient.iml" filepath="$PROJECT_DIR$/patient/patient.iml" />
+    </modules>
+  </component>
+</project>

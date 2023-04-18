@@ -70,7 +70,7 @@ public class DiseaseService {
             report = new Report(idPatient,age, nbTrigger, "Early Onset");
             return report;
         } else {
-            if ((age > 30 && nbTrigger >= 6) || (gender.equals("M") && (age <= 30) && (nbTrigger >= 4)) ||
+            if ((age > 30 && nbTrigger >= 6) || (gender.equals("F") && (age <= 30) && (nbTrigger >= 4)) ||
                     (gender.equals("M") && (age <= 30) && (nbTrigger >= 3))) {
                 report = new Report(idPatient,age, nbTrigger, "In Danger");
                 return report;

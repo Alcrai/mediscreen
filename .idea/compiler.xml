@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="client" />
+        <module name="config-server" />
+        <module name="disease" />
+        <module name="history" />
+        <module name="eureka" />
+        <module name="patient" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="client" target="1.8" />
+      <module name="config-server" target="1.8" />
+      <module name="disease" target="1.8" />
+      <module name="eureka" target="1.8" />
+      <module name="history" target="1.8" />
+      <module name="patient" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="client" options="-parameters" />
+      <module name="config-server" options="-parameters" />
+      <module name="disease" options="-parameters" />
+      <module name="eureka" options="-parameters" />
+      <module name="history" options="-parameters" />
+      <module name="patient" options="-parameters" />
+    </option>
+  </component>
+</project>
